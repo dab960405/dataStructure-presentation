@@ -1,334 +1,438 @@
 import React, { useState } from 'react';
-import { ChevronRight, ChevronLeft, Database, Code, Layers, Zap, BookOpen, BarChart3, Link2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Code, Database, Pointer, Layers, Package, List } from 'lucide-react';
 
 const Presentation = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Add keyframes styles to head
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes floatCube {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(3px, -8px) scale(1.05); }
+      }
+      @keyframes pulseSlow {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.3); }
+      }
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.5); }
+      }
+      @keyframes gentleBob {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+      }
+      @keyframes orbit0 {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes orbit1 {
+        0% { transform: rotate(120deg); }
+        100% { transform: rotate(480deg); }
+      }
+      @keyframes orbit2 {
+        0% { transform: rotate(240deg); }
+        100% { transform: rotate(600deg); }
+      }
+      @keyframes expandFade {
+        0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.6; }
+        100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+      }
+      @keyframes pinDrop {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes slideArrow {
+        0%, 100% { transform: translateX(0px); opacity: 0.6; }
+        50% { transform: translateX(10px); opacity: 1; }
+      }
+      @keyframes slideArrowHead {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(10px); }
+      }
+      @keyframes glowPulse {
+        0%, 100% { opacity: 0.1; transform: scale(1); }
+        50% { opacity: 0.3; transform: scale(1.2); }
+      }
+      @keyframes pointerPulse {
+        0%, 100% { transform: scale(1) translateY(0); }
+        50% { transform: scale(1.1) translateY(-5px); }
+      }
+      @keyframes hexagonPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+      @keyframes slideIn {
+        0%, 100% { opacity: 0.5; transform: translateX(0); }
+        50% { opacity: 1; transform: translateX(-5px); }
+      }
+      @keyframes arrowFlow {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+      @keyframes fadeInSlide {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
 
   const slides = [
     {
       id: 0,
       title: "Estructuras de Datos",
-      subtitle: "El Fundamento de la Programación Eficiente",
-      content: "Organiza, almacena y accede a información de forma inteligente",
-      bgGradient: "from-blue-600 via-purple-600 to-pink-600",
-      icon: Database,
-      showFormula: true
+      subtitle: "Módulo 2: Fundamentos y Aplicaciones",
+      type: "cover",
+      gradient: "from-blue-600 via-purple-600 to-pink-600",
+      icon: Database
     },
     {
       id: 1,
-      title: "¿Por Qué Importan?",
-      subtitle: "La Fórmula de Niklaus Wirth",
-      content: "ALGORITMOS + ESTRUCTURAS DE DATOS = PROGRAMAS",
-      details: "Una buena estructura determina la eficiencia, velocidad y facilidad de mantenimiento de cualquier software",
-      bgGradient: "from-emerald-600 to-teal-600",
-      icon: Zap,
-      animated: true
+      title: "¿Qué son las Estructuras de Datos?",
+      content: [
+        "Colección de datos organizados lógicamente",
+        "Facilitan la manipulación y acceso a información",
+        "La información siempre está estructurada y organizada",
+        "Ejemplo: Un diccionario ordena palabras alfabéticamente"
+      ],
+      gifUrl: "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/data-structures/data-structures.png",
+      gradient: "from-blue-500 to-cyan-500",
+      icon: Layers
     },
     {
       id: 2,
-      title: "Concepto Fundamental",
-      subtitle: "¿Qué es una Estructura de Datos?",
-      content: "Una colección organizada que agrupa diferentes tipos de información bajo un solo identificador",
-      example: "Usuario { nombre, edad, email, teléfono }",
-      bgGradient: "from-orange-500 to-red-600",
-      icon: BarChart3,
-      features: ["Agrupa información relacionada", "Permite acceso eficiente", "Facilita manipulación de datos"]
+      title: "La Ecuación Fundamental",
+      subtitle: "Niklaus Wirth (Creador de PASCAL)",
+      formula: "Algoritmos + Estructuras de Datos = Programas",
+      content: [
+        "Un buen programa necesita:",
+        "✓ Algoritmo eficiente",
+        "✓ Estructura de datos adecuada"
+      ],
+      gradient: "from-purple-500 to-pink-500",
+      icon: Code,
+      hasNetworkBg: true,
+      hasFlowDiagram: true
     },
     {
       id: 3,
       title: "Tipos de Estructuras",
-      subtitle: "Estáticas vs Dinámicas",
-      bgGradient: "from-indigo-600 to-blue-600",
-      icon: Layers,
-      comparison: [
+      columns: [
         {
           title: "Estáticas",
-          items: ["Tamaño fijo en memoria", "Definidas antes de ejecutar", "Ej: Arrays, Registros"],
-          color: "bg-blue-100 border-blue-400"
+          iconType: "static-blocks",
+          items: [
+            "Tamaño fijo en memoria",
+            "Definido en compilación",
+            "No cambia durante ejecución",
+            "Ejemplo: Arrays de tamaño fijo"
+          ],
+          color: "blue"
         },
         {
           title: "Dinámicas",
-          items: ["Tamaño variable", "Se adaptan en tiempo real", "Ej: Listas, Árboles"],
-          color: "bg-purple-100 border-purple-400"
+          iconType: "dynamic-particles",
+          items: [
+            "Tamaño variable",
+            "Cambia en tiempo de ejecución",
+            "Más flexible",
+            "Ejemplo: Listas enlazadas"
+          ],
+          color: "green"
         }
-      ]
+      ],
+      gradient: "from-indigo-500 to-purple-500",
+      icon: Package
     },
     {
       id: 4,
-      title: "Componentes de una Estructura",
-      subtitle: "Los Pilares Fundamentales",
-      bgGradient: "from-green-600 to-emerald-600",
-      icon: Code,
-      components: [
-        { name: "Miembros", desc: "Los componentes individuales" },
-        { name: "Tipos de Dato", desc: "int, char, float, etc." },
-        { name: "Nombres", desc: "Identificadores únicos" }
-      ]
+      title: "Estructuras (struct)",
+      subtitle: "Agrupando diferentes tipos de datos",
+      code: `struct almacen {
+    char nombre[20];
+    char proveedor[25];
+    int cantidad;
+    float precio;
+    char fecha_compra[8];
+};`,
+      content: [
+        "Agrupa variables de diferentes tipos",
+        "Cada elemento se llama 'miembro'",
+        "Facilita organización de datos relacionados"
+      ],
+      gradient: "from-cyan-500 to-blue-500",
+      icon: Package
     },
     {
       id: 5,
-      title: "Declaración de Estructuras",
-      subtitle: "Paso 1: Crear el Molde",
-      bgGradient: "from-cyan-600 to-blue-600",
+      title: "Acceso a Estructuras",
+      subtitle: "Dos formas de acceder a los miembros",
+      columns: [
+        {
+          title: "Operador Punto (.)",
+          iconType: "dot-operator",
+          code: "producto.nombre = \"Atún\";\nproducto.cantidad = 100;",
+          desc: "Acceso directo"
+        },
+        {
+          title: "Operador Flecha (->)",
+          iconType: "arrow-operator",
+          code: "ptr->nombre = \"Atún\";\nptr->cantidad = 100;",
+          desc: "Acceso mediante puntero"
+        }
+      ],
+      gradient: "from-green-500 to-teal-500",
       icon: Code,
-      code: `struct almacen {
-    char nombre[20];
-    int cantidad;
-    float precio;
-    char fecha[8];
-};`,
-      codeHighlight: true
+      hasNetworkBg: true
     },
     {
       id: 6,
-      title: "Variables y Inicialización",
-      subtitle: "Paso 2 y 3: Crear Instancias",
-      bgGradient: "from-violet-600 to-purple-600",
-      icon: Database,
-      code: `struct almacen producto1 = {
-    "Lata de Atún",
-    1000,
-    1520.23,
-    "12-05-2013"
-};`,
-      codeHighlight: true
+      title: "Punteros (Apuntadores)",
+      subtitle: "Variables que almacenan direcciones de memoria",
+      content: [
+        "Un puntero 'apunta' a otra variable",
+        "Almacena la dirección de memoria",
+        "Operador & obtiene la dirección",
+        "Operador * accede al valor apuntado"
+      ],
+      hasCircuitBg: true,
+      hasPointerDiagram: true,
+      diagram: true,
+      gradient: "from-orange-500 to-red-500",
+      icon: Pointer
     },
     {
       id: 7,
-      title: "Acceso a los Datos",
-      subtitle: "Dos Métodos Principales",
-      bgGradient: "from-rose-600 to-pink-600",
-      icon: Link2,
-      methods: [
-        {
-          name: "Operador Punto (.)",
-          code: "producto.nombre = \"Nuevo\";",
-          use: "Acceso directo a la variable"
-        },
-        {
-          name: "Operador Flecha (->)",
-          code: "ptr->nombre = \"Nuevo\";",
-          use: "Acceso mediante puntero"
-        }
-      ]
+      title: "Declaración de Punteros",
+      code: `int *puntero1;      // Puntero a entero
+float *puntero2;    // Puntero a float
+char *puntero3;     // Puntero a char
+
+int edad = 25;
+int *p_edad = &edad;  // p_edad apunta a edad
+printf("%d", *p_edad); // Imprime: 25`,
+      content: [
+        "Se declaran con asterisco (*)",
+        "Deben inicializarse antes de usarse",
+        "El tipo debe coincidir con la variable"
+      ],
+      gradient: "from-red-500 to-pink-500",
+      icon: Pointer
     },
     {
       id: 8,
-      title: "Memoria y Tamaño",
-      subtitle: "¿Cuánto Espacio Ocupa?",
-      bgGradient: "from-amber-600 to-orange-600",
-      icon: Database,
-      memory: [
-        { field: "nombre[20]", type: "char", size: "20 bytes" },
-        { field: "edad", type: "int", size: "2 bytes" },
-        { field: "altura", type: "float", size: "4 bytes" },
-        { field: "peso", type: "float", size: "4 bytes" }
+      title: "Uniones y Enumeraciones",
+      columns: [
+        {
+          title: "Uniones",
+          gifUrl: "https://cdn-icons-png.flaticon.com/512/3524/3524388.png",
+          items: [
+            "Miembros comparten memoria",
+            "Tamaño = miembro más grande",
+            "Solo un miembro activo a la vez"
+          ],
+          color: "purple"
+        },
+        {
+          title: "Enumeraciones",
+          gifUrl: "https://cdn-icons-png.flaticon.com/512/6614/6614953.png",
+          items: [
+            "Conjunto de constantes",
+            "Valores enteros nombrados",
+            "Mejoran legibilidad del código"
+          ],
+          color: "indigo"
+        }
       ],
-      total: "30 bytes"
+      gradient: "from-violet-500 to-purple-500",
+      icon: List
     },
     {
       id: 9,
-      title: "Estructuras Avanzadas",
-      subtitle: "Casos Complejos",
-      bgGradient: "from-fuchsia-600 to-pink-600",
-      icon: Layers,
-      advanced: [
-        { name: "Anidadas", desc: "Estructuras dentro de estructuras", icon: "⚙️" },
-        { name: "Arrays", desc: "Listas de estructuras idénticas", icon: "📊" },
-        { name: "Uniones", desc: "Comparten espacio en memoria", icon: "🔗" },
-        { name: "Enumeraciones", desc: "Constantes nombradas", icon: "📝" }
-      ]
+      title: "Aplicaciones Prácticas",
+      content: [
+        "🏢 Sistemas de gestión (inventarios, empleados)",
+        "🎮 Desarrollo de videojuegos (objetos, personajes)",
+        "📊 Bases de datos (registros estructurados)",
+        "🌐 Redes y comunicaciones (paquetes de datos)",
+        "🤖 Inteligencia Artificial (grafos, árboles)"
+      ],
+      gradient: "from-pink-500 to-rose-500",
+      icon: Database
     },
     {
       id: 10,
-      title: "¿Qué es un Puntero?",
-      subtitle: "La Herramienta Más Poderosa",
-      bgGradient: "from-teal-600 to-cyan-600",
-      icon: Link2,
-      analogy: "Si las variables son casas, los punteros son sus direcciones",
-      concept: "Una variable que almacena la dirección de memoria de otra variable"
+      title: "Conceptos Avanzados de Estructuras",
+      columns: [
+        {
+          title: "Estructuras Anidadas",
+          gifUrl: "https://cdn-icons-png.flaticon.com/512/2920/2920349.png",
+          items: [
+            "Una estructura dentro de otra",
+            "Reutilización de código",
+            "Organización jerárquica"
+          ],
+          color: "blue"
+        },
+        {
+          title: "Arreglos y Typedef",
+          gifUrl: "https://cdn-icons-png.flaticon.com/512/2920/2920324.png",
+          items: [
+            "Arreglos de estructuras",
+            "Typedef para alias",
+            "Simplifica declaraciones"
+          ],
+          color: "purple"
+        }
+      ],
+      gradient: "from-indigo-600 to-blue-600",
+      icon: Layers
     },
     {
       id: 11,
-      title: "Declaración de Punteros",
-      subtitle: "Sintaxis y Ejemplos",
-      bgGradient: "from-lime-600 to-green-600",
-      icon: Code,
-      code: `int *puntero;           // Puntero a entero
-char *texto;            // Puntero a carácter
-float *decimal;         // Puntero a decimal
-struct auto *coche;     // Puntero a estructura`,
-      codeHighlight: true
+      title: "Concepto de Apuntadores",
+      subtitle: "Definición y Características Fundamentales",
+      content: [
+        "📍 Variable que almacena direcciones de memoria",
+        "🔗 Permite acceso indirecto a los datos",
+        "⚡ Manipulación directa y eficiente de memoria",
+        "🎯 Operador & obtiene dirección, * accede al valor",
+        "⚠️ Potente pero requiere manejo cuidadoso"
+      ],
+      gifUrl: "https://cdn-icons-png.flaticon.com/512/1087/1087840.png",
+      gradient: "from-red-500 via-orange-500 to-yellow-500",
+      icon: Pointer
     },
     {
       id: 12,
-      title: "Operadores de Punteros",
-      subtitle: "Los Dos Operadores Clave",
-      bgGradient: "from-sky-600 to-blue-600",
-      icon: Zap,
-      operators: [
+      title: "¿Por Qué Usar Punteros?",
+      subtitle: "Razones técnicas y filosóficas",
+      columns: [
         {
-          symbol: "&",
-          name: "Dirección",
-          desc: "Obtiene la dirección de memoria",
-          example: "int x = 100; printf(\"%p\", &x);"
+          title: "Ventajas",
+          gifUrl: "https://cdn-icons-png.flaticon.com/512/5610/5610944.png",
+          items: [
+            "Mayor eficiencia y velocidad",
+            "Control directo de memoria",
+            "Gestión dinámica de recursos",
+            "Estructuras de datos complejas",
+            "Menor uso de memoria"
+          ],
+          color: "green"
         },
         {
-          symbol: "*",
-          name: "Indirección",
-          desc: "Accede al valor en esa dirección",
-          example: "int *p = &x; printf(\"%d\", *p);"
+          title: "Desventajas",
+          gifUrl: "https://cdn-icons-png.flaticon.com/512/5610/5610945.png",
+          items: [
+            "Fuente común de errores",
+            "Difíciles de depurar",
+            "Corrupción de memoria",
+            "Curva de aprendizaje alta",
+            "Problemas de seguridad"
+          ],
+          color: "red"
         }
-      ]
+      ],
+      gradient: "from-emerald-500 to-teal-500",
+      icon: Code
     },
     {
       id: 13,
-      title: "Punteros y Arrays",
-      subtitle: "Una Relación Fundamental",
-      bgGradient: "from-red-600 to-rose-600",
-      icon: BarChart3,
-      insight: "El nombre de un array ES un puntero al primer elemento",
-      equivalent: [
-        "lista[0] ≡ *lista",
-        "lista[1] ≡ *(lista + 1)",
-        "lista[2] ≡ *(lista + 2)"
-      ]
+      title: "Lenguajes CON Punteros Explícitos",
+      content: [
+        "🔷 C - Control total de memoria",
+        "🔷 C++ - Orientado a objetos con punteros",
+        "🔷 Pascal - Punteros más seguros",
+        "🔷 Rust - Punteros con seguridad garantizada",
+        "🔷 Go - Punteros limitados y seguros"
+      ],
+      subtitle: "Acceso directo a direcciones de memoria",
+      gifUrl: "https://cdn-icons-png.flaticon.com/512/6132/6132222.png",
+      gradient: "from-blue-600 to-indigo-600",
+      icon: Pointer
+    },
+    {
+      id: 13,
+      title: "Lenguajes SIN Punteros Explícitos",
+      content: [
+        "🟢 Java - Referencias automáticas, sin aritmética",
+        "🟢 Python - Gestión automática de memoria",
+        "🟢 JavaScript - Referencias ocultas al programador",
+        "🟢 C# - Referencias gestionadas por CLR",
+        "🟢 Ruby - Todo es referencia implícita"
+      ],
+      subtitle: "Abstracción y gestión automática",
+      gifUrl: "https://cdn-icons-png.flaticon.com/512/2920/2920277.png",
+      gradient: "from-green-600 to-emerald-600",
+      icon: Database
     },
     {
       id: 14,
-      title: "Punteros a Funciones",
-      subtitle: "Código Apuntando a Código",
-      bgGradient: "from-purple-600 to-indigo-600",
-      icon: Code,
-      code: `double (*f)(double);  // Declaración
-f = sin;               // Asignar función
-double res = f(3.14);  // Usar función`,
-      codeHighlight: true,
-      use: "Permite pasar funciones como parámetros a otras funciones"
-    },
-    {
-      id: 15,
-      title: "Aplicaciones Prácticas",
-      subtitle: "Dónde se Usan las Estructuras",
-      bgGradient: "from-emerald-600 to-teal-600",
-      icon: BookOpen,
-      applications: [
-        { icon: "👤", text: "Sistemas de Usuarios" },
-        { icon: "💼", text: "Gestión de Empleados" },
-        { icon: "📦", text: "Inventarios" },
-        { icon: "🏦", text: "Sistemas Bancarios" },
-        { icon: "🏥", text: "Registros Médicos" },
-        { icon: "🎮", text: "Videojuegos" }
-      ]
+      title: "¿Por Qué Esta Diferencia?",
+      content: [
+        "🎯 Filosofía de diseño: Bajo nivel vs Alto nivel",
+        "🛡️ Seguridad: Prevenir errores de memoria",
+        "📚 Facilidad de aprendizaje: Sintaxis más simple",
+        "🚀 Rendimiento vs Productividad",
+        "🔧 Casos de uso: Sistemas vs Aplicaciones"
+      ],
+      gradient: "from-purple-600 to-pink-600",
+      icon: Layers
     },
     {
       id: 16,
-      title: "Jerarquía de Estructuras",
-      subtitle: "La Visión Completa",
-      bgGradient: "from-blue-600 to-cyan-600",
-      icon: Layers,
-      hierarchy: [
-        { level: "Estáticas", items: ["Primitivas", "Arrays", "Struct", "Union", "Enum"] },
-        { level: "Dinámicas", items: ["Listas", "Pilas", "Colas", "Árboles", "Grafos"] }
-      ]
+      title: "Comparación Práctica",
+      columns: [
+        {
+          title: "Con Punteros (C)",
+          gifUrl: "https://raw.githubusercontent.com/github/explore/f3e22f0dca2be955676bc70d6214b95b13354ee8/topics/c/c.png",
+          code: "int x = 10;\nint *ptr = &x;\n*ptr = 20;\n// x ahora es 20",
+          desc: "Control directo de memoria"
+        },
+        {
+          title: "Sin Punteros (Python)",
+          gifUrl: "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png",
+          code: "x = 10\ny = x\ny = 20\n# x sigue siendo 10",
+          desc: "Referencias automáticas"
+        }
+      ],
+      gradient: "from-cyan-600 to-blue-600",
+      icon: Code
     },
     {
       id: 17,
-      title: "Beneficios Clave",
-      subtitle: "¿Por Qué Dominarlas?",
-      bgGradient: "from-yellow-500 to-orange-600",
-      icon: Zap,
-      benefits: [
-        "✅ Organiza información de forma lógica",
-        "✅ Permite acceso rápido y eficiente",
-        "✅ Facilita la modificación de datos",
-        "✅ Promueve reutilización de código",
-        "✅ Escala a proyectos complejos",
-        "✅ Mejora legibilidad y mantenimiento"
-      ]
+      title: "Conceptos Avanzados de Punteros",
+      subtitle: "Del documento Estructuras de Datos Módulo 2",
+      content: [
+        "🔗 Punteros a punteros (indirección múltiple)",
+        "📊 Punteros a arrays (navegación eficiente)",
+        "🔢 Aritmética de punteros (ptr++, ptr+n)",
+        "⚙️ Punteros a funciones (callbacks)",
+        "🎯 Arrays de punteros (matrices dinámicas)"
+      ],
+      gradient: "from-orange-600 to-red-600",
+      icon: Pointer
     },
     {
       id: 18,
-      title: "Concepto: ¿Qué es un Apuntador?",
-      subtitle: "Definición Formal y Características",
-      bgGradient: "from-indigo-600 to-purple-600",
-      icon: Link2,
-      definition: "Una variable que almacena la dirección de memoria de otra variable u objeto",
-      characteristics: [
-        { title: "Dirección", desc: "Indica dónde está ubicado un dato en RAM" },
-        { title: "Indirección", desc: "Acceso al valor sin conocer su dirección directa" },
-        { title: "Flexibilidad", desc: "Trabajo dinámico con memoria" },
-        { title: "Control", desc: "Asignación y liberación de memoria" }
-      ]
-    },
-    {
-      id: 19,
-      title: "¿Por Qué Algunos Lenguajes Los Usan?",
-      subtitle: "Razones Técnicas y Filosóficas",
-      bgGradient: "from-cyan-600 to-teal-600",
-      icon: Zap,
-      reasons: [
-        { icon: "💾", title: "Control de Memoria", desc: "Asignación dinámica y estructuras complejas" },
-        { icon: "⚡", title: "Eficiencia", desc: "Evitar copias innecesarias de datos" },
-        { icon: "🔧", title: "Flexibilidad", desc: "Pasar por referencia, crear genéricos" },
-        { icon: "🖥️", title: "Hardware", desc: "Acceso directo a memoria de bajo nivel" }
-      ]
-    },
-    {
-      id: 20,
-      title: "Lenguajes CON Apuntadores",
-      subtitle: "Control Total del Programador",
-      bgGradient: "from-orange-600 to-red-600",
-      icon: Code,
-      languagesWithPointers: [
-        { name: "C", level: "⭐⭐⭐⭐⭐ Control", desc: "Máximo control, riesgo alto", use: "Sistemas operativos, drivers" },
-        { name: "C++", level: "⭐⭐⭐⭐⭐ Control", desc: "Punteros + OOP + RAII", use: "Videojuegos, sistemas" },
-        { name: "Rust", level: "⭐⭐⭐⭐ Seguro", desc: "Punteros seguros con borrow checker", use: "Sistemas seguros" },
-        { name: "Go", level: "⭐⭐⭐ Simple", desc: "Punteros sin aritmética", use: "Servidores, APIs" }
-      ]
-    },
-    {
-      id: 21,
-      title: "Lenguajes SIN Apuntadores",
-      subtitle: "Abstracción y Seguridad",
-      bgGradient: "from-green-600 to-emerald-600",
+      title: "Conclusiones",
+      content: [
+        "Las estructuras organizan datos complejos eficientemente",
+        "Los punteros permiten manipulación directa de memoria",
+        "No todos los lenguajes necesitan punteros explícitos",
+        "La elección depende del proyecto, rendimiento y seguridad",
+        "C/C++ para sistemas, Java/Python para aplicaciones",
+        "Comprender ambos enfoques es fundamental"
+      ],
+      gradient: "from-blue-600 via-purple-600 to-pink-600",
       icon: Database,
-      languagesWithoutPointers: [
-        { name: "Java", level: "✅ Seguro", desc: "Referencias implícitas, GC automático", use: "Aplicaciones empresariales" },
-        { name: "Python", level: "✅ Fácil", desc: "Referencias transparentes", use: "Data Science, Web" },
-        { name: "JavaScript", level: "✅ Dinámico", desc: "Gestión automática de memoria", use: "Frontend/Backend Web" },
-        { name: "C#", level: "✅ Seguro", desc: "Referencias seguras, .NET gestiona", use: "Aplicaciones Windows" }
-      ]
-    },
-    {
-      id: 22,
-      title: "Comparativa: Lenguajes de Programación",
-      subtitle: "Matriz de Características",
-      bgGradient: "from-violet-600 to-purple-600",
-      icon: BarChart3,
-      comparison2: [
-        { lang: "C", punteros: "✅ Sí", control: "⭐⭐⭐⭐⭐", seguridad: "⭐", uso: "Sistemas" },
-        { lang: "C++", punteros: "✅ Sí", control: "⭐⭐⭐⭐⭐", seguridad: "⭐⭐⭐", uso: "Juegos/Sistemas" },
-        { lang: "Rust", punteros: "✅ Seguro", control: "⭐⭐⭐⭐", seguridad: "⭐⭐⭐⭐⭐", uso: "Sistemas" },
-        { lang: "Go", punteros: "✅ Limitado", control: "⭐⭐⭐", seguridad: "⭐⭐⭐⭐", uso: "Servidores" },
-        { lang: "Java", punteros: "❌ No", control: "⭐⭐", seguridad: "⭐⭐⭐⭐⭐", uso: "Empresa" },
-        { lang: "Python", punteros: "❌ No", control: "⭐⭐", seguridad: "⭐⭐⭐", uso: "Data/Web" }
-      ]
-    },
-    {
-      id: 23,
-      title: "Conclusión",
-      subtitle: "El Viaje Apenas Comienza",
-      content: "Las estructuras de datos son la base del pensamiento computacional",
-      bgGradient: "from-indigo-600 via-purple-600 to-pink-600",
-      icon: Database,
-      finalMessage: "Dominarlas te convierte en un programador competente, capaz de resolver problemas complejos de forma elegante y eficiente.",
-      isLastSlide: true
+      type: "conclusion"
     }
   ];
-
-  const currentSlideData = slides[currentSlide];
-  const Icon = currentSlideData.icon;
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -338,416 +442,925 @@ double res = f(3.14);  // Usar función`,
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-      return (
-    <div className="h-screen w-screen bg-gray-900 flex flex-col overflow-hidden">
-      {/* Main Content - Fixed height */}
-      <div className="flex-1 flex items-center justify-center p-3">
-        <div className={`w-full h-full bg-gradient-to-br ${currentSlideData.bgGradient} rounded-2xl shadow-2xl overflow-hidden flex flex-col`}>
-          {/* Slide Content */}
-          <div className="flex-1 flex flex-col px-8 py-4 text-white relative overflow-hidden">
-            <div className="flex-1 overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.2) transparent' }}>
-              <style>{`
-                div::-webkit-scrollbar {
-                  width: 8px;
-                }
-                div::-webkit-scrollbar-track {
-                  background: transparent;
-                }
-                div::-webkit-scrollbar-thumb {
-                  background: rgba(255,255,255,0.3);
-                  border-radius: 4px;
-                }
-                div::-webkit-scrollbar-thumb:hover {
-                  background: rgba(255,255,255,0.5);
-                }
-              `}</style>
-            <div className="absolute top-8 right-8 opacity-20">
-              <Icon size={120} />
-            </div>
-            </div>
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
 
-            <div className="relative z-10">
-              {/* Title */}
-              <h1 className="text-3xl font-black mb-1 leading-tight">
-                {currentSlideData.title}
-              </h1>
+  const slide = slides[currentSlide];
 
-              {/* Subtitle */}
-              {currentSlideData.subtitle && (
-                <h2 className="text-sm font-light mb-2 opacity-90">
-                  {currentSlideData.subtitle}
-                </h2>
-              )}
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col">
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center p-8">
+        <div className="w-full max-w-6xl">
+          <div className={`bg-gradient-to-br ${slide.gradient} rounded-3xl shadow-2xl p-12 min-h-[600px] flex flex-col justify-center transform transition-all duration-500`}>
+            
+            {/* Cover Slide */}
+            {slide.type === "cover" && (
+              <div className="text-center space-y-8 relative overflow-hidden">
+                {/* Animated floating data structures */}
+                <div className="absolute inset-0 opacity-30">
+                  {/* Tree structure top left */}
+                  <div className="absolute top-20 left-20 animate-float" style={{animationDelay: '0s'}}>
+                    <svg width="80" height="80" viewBox="0 0 100 100" className="text-white/60">
+                      <circle cx="50" cy="20" r="8" fill="currentColor"/>
+                      <line x1="50" y1="28" x2="35" y2="50" stroke="currentColor" strokeWidth="2"/>
+                      <line x1="50" y1="28" x2="65" y2="50" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="35" cy="50" r="8" fill="currentColor"/>
+                      <circle cx="65" cy="50" r="8" fill="currentColor"/>
+                      <line x1="35" y1="58" x2="25" y2="75" stroke="currentColor" strokeWidth="2"/>
+                      <line x1="35" y1="58" x2="45" y2="75" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="25" cy="75" r="6" fill="currentColor"/>
+                      <circle cx="45" cy="75" r="6" fill="currentColor"/>
+                    </svg>
+                  </div>
 
-              {/* Formula */}
-              {currentSlideData.showFormula && (
-                <div className="bg-white/20 backdrop-blur-md rounded-lg p-2 mb-2 border border-white/30">
-                  <p className="text-xs font-bold text-center">
-                    ALGORITMOS + ESTRUCTURAS DE DATOS = PROGRAMAS
-                  </p>
-                </div>
-              )}
+                  {/* Linked list top right */}
+                  <div className="absolute top-32 right-32 animate-float" style={{animationDelay: '0.5s'}}>
+                    <svg width="120" height="60" viewBox="0 0 150 60" className="text-white/60">
+                      <rect x="10" y="20" width="30" height="20" fill="currentColor" rx="4"/>
+                      <rect x="60" y="20" width="30" height="20" fill="currentColor" rx="4"/>
+                      <rect x="110" y="20" width="30" height="20" fill="currentColor" rx="4"/>
+                      <path d="M 40 30 L 55 30" stroke="currentColor" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+                      <path d="M 90 30 L 105 30" stroke="currentColor" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+                      <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                          <polygon points="0 0, 10 3, 0 6" fill="currentColor" />
+                        </marker>
+                      </defs>
+                    </svg>
+                  </div>
 
-              {/* Content */}
-              {currentSlideData.content && (
-                <p className="text-xs mb-2 leading-relaxed opacity-95">
-                  {currentSlideData.content}
-                </p>
-              )}
+                  {/* Stack bottom left */}
+                  <div className="absolute bottom-40 left-40 animate-float" style={{animationDelay: '1s'}}>
+                    <svg width="70" height="90" viewBox="0 0 80 100" className="text-white/60">
+                      <rect x="15" y="70" width="50" height="15" fill="currentColor" rx="2"/>
+                      <rect x="15" y="50" width="50" height="15" fill="currentColor" rx="2"/>
+                      <rect x="15" y="30" width="50" height="15" fill="currentColor" rx="2"/>
+                      <rect x="15" y="10" width="50" height="15" fill="currentColor" rx="2"/>
+                    </svg>
+                  </div>
 
-              {/* Details */}
-              {currentSlideData.details && (
-                <p className="text-xs mb-2 leading-relaxed opacity-90">
-                  {currentSlideData.details}
-                </p>
-              )}
+                  {/* Array bottom right */}
+                  <div className="absolute bottom-32 right-40 animate-float" style={{animationDelay: '1.5s'}}>
+                    <svg width="100" height="50" viewBox="0 0 120 50" className="text-white/60">
+                      <rect x="10" y="15" width="20" height="20" fill="currentColor" rx="2"/>
+                      <rect x="35" y="15" width="20" height="20" fill="currentColor" rx="2"/>
+                      <rect x="60" y="15" width="20" height="20" fill="currentColor" rx="2"/>
+                      <rect x="85" y="15" width="20" height="20" fill="currentColor" rx="2"/>
+                    </svg>
+                  </div>
 
-              {/* Features */}
-              {currentSlideData.features && (
-                <div className="space-y-1 mb-2">
-                  {currentSlideData.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center text-xs">
-                      <span className="mr-1 text-xs">→</span>
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-              )}
+                  {/* Graph center right */}
+                  <div className="absolute top-1/2 right-20 animate-float" style={{animationDelay: '2s'}}>
+                    <svg width="90" height="90" viewBox="0 0 100 100" className="text-white/60">
+                      <line x1="30" y1="30" x2="70" y2="30" stroke="currentColor" strokeWidth="2"/>
+                      <line x1="30" y1="30" x2="30" y2="70" stroke="currentColor" strokeWidth="2"/>
+                      <line x1="70" y1="30" x2="70" y2="70" stroke="currentColor" strokeWidth="2"/>
+                      <line x1="30" y1="70" x2="70" y2="70" stroke="currentColor" strokeWidth="2"/>
+                      <line x1="30" y1="30" x2="70" y2="70" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="30" cy="30" r="8" fill="currentColor"/>
+                      <circle cx="70" cy="30" r="8" fill="currentColor"/>
+                      <circle cx="30" cy="70" r="8" fill="currentColor"/>
+                      <circle cx="70" cy="70" r="8" fill="currentColor"/>
+                    </svg>
+                  </div>
 
-              {/* Example */}
-              {currentSlideData.example && (
-                <div className="bg-black/30 rounded-lg p-2 mb-2 font-mono text-xs border-l-4 border-white/50">
-                  {currentSlideData.example}
-                </div>
-              )}
+                  {/* Pointer/Memory center left */}
+                  <div className="absolute top-1/2 left-24 animate-float" style={{animationDelay: '2.5s'}}>
+                    <svg width="100" height="80" viewBox="0 0 120 90" className="text-white/60">
+                      <rect x="10" y="30" width="40" height="30" fill="currentColor" rx="4"/>
+                      <path d="M 50 45 L 75 45" stroke="currentColor" strokeWidth="3" markerEnd="url(#arrowhead2)"/>
+                      <rect x="75" y="30" width="40" height="30" fill="currentColor" rx="4"/>
+                      <defs>
+                        <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                          <polygon points="0 0, 10 3, 0 6" fill="currentColor" />
+                        </marker>
+                      </defs>
+                    </svg>
+                  </div>
 
-              {/* Comparison */}
-              {currentSlideData.comparison && (
-                <div className="grid grid-cols-2 gap-1.5 mb-2">
-                  {currentSlideData.comparison.map((item, idx) => (
-                    <div key={idx} className={`${item.color} border-2 rounded-lg p-1.5`}>
-                      <h3 className="font-bold text-gray-800 mb-0.5 text-xs">{item.title}</h3>
-                      <ul className="space-y-0.5">
-                        {item.items.map((i, j) => (
-                          <li key={j} className="text-gray-700 flex items-start text-xs">
-                            <span className="mr-1">•</span>{i}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Components */}
-              {currentSlideData.components && (
-                <div className="space-y-1 mb-2">
-                  {currentSlideData.components.map((comp, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-1.5">
-                      <h3 className="font-bold text-xs mb-0.5">{comp.name}</h3>
-                      <p className="text-xs opacity-90">{comp.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Code */}
-              {currentSlideData.code && (
-                <div className="bg-black/50 rounded-lg p-2 mb-2 font-mono text-xs overflow-x-auto border border-white/20">
-                  <pre className="text-yellow-300">{currentSlideData.code}</pre>
-                </div>
-              )}
-
-              {/* Methods */}
-              {currentSlideData.methods && (
-                <div className="space-y-1 mb-2">
-                  {currentSlideData.methods.map((method, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-1.5">
-                      <h3 className="font-bold text-xs mb-0.5">{method.name}</h3>
-                      <code className="bg-black/30 p-1 rounded text-yellow-300 block mb-0.5 text-xs">{method.code}</code>
-                      <p className="text-xs opacity-90">{method.use}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Memory */}
-              {currentSlideData.memory && (
-                <div className="mb-2">
-                  <table className="w-full text-xs mb-1.5">
-                    <tbody>
-                      {currentSlideData.memory.map((row, idx) => (
-                        <tr key={idx} className="border-b border-white/30">
-                          <td className="py-0.5 font-mono text-xs">{row.field}</td>
-                          <td className="py-0.5 text-xs">{row.type}</td>
-                          <td className="py-0.5 text-right font-bold text-xs">{row.size}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <div className="bg-yellow-300/20 rounded-lg p-1.5 text-xs font-bold">
-                    Total: {currentSlideData.total}
+                  {/* Sparkles */}
+                  <div className="absolute top-1/4 left-1/4 animate-pulse" style={{animationDelay: '0.3s'}}>
+                    <div className="text-white/40 text-4xl">✦</div>
+                  </div>
+                  <div className="absolute bottom-1/4 right-1/4 animate-pulse" style={{animationDelay: '0.8s'}}>
+                    <div className="text-white/40 text-3xl">✦</div>
+                  </div>
+                  <div className="absolute top-1/3 right-1/3 animate-pulse" style={{animationDelay: '1.3s'}}>
+                    <div className="text-white/40 text-2xl">✦</div>
                   </div>
                 </div>
-              )}
 
-              {/* Advanced */}
-              {currentSlideData.advanced && (
-                <div className="grid grid-cols-2 gap-1.5 mb-2">
-                  {currentSlideData.advanced.map((adv, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-1.5">
-                      <div className="text-lg mb-0.5">{adv.icon}</div>
-                      <h3 className="font-bold text-xs mb-0.5">{adv.name}</h3>
-                      <p className="text-xs opacity-90">{adv.desc}</p>
+                {/* Main content */}
+                <div className="relative z-10">
+                  <div className="flex justify-center mb-8">
+                    <div className="bg-white/20 backdrop-blur-lg rounded-full p-8">
+                      <Database className="w-24 h-24 text-white" />
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Analogy */}
-              {currentSlideData.analogy && (
-                <div className="bg-white/20 backdrop-blur-md rounded-lg p-2 mb-2 border border-white/30 text-center">
-                  <p className="text-xs font-bold italic">{currentSlideData.analogy}</p>
-                </div>
-              )}
-
-              {/* Concept */}
-              {currentSlideData.concept && (
-                <p className="text-xs mb-2 leading-relaxed opacity-95">
-                  {currentSlideData.concept}
-                </p>
-              )}
-
-              {/* Operators */}
-              {currentSlideData.operators && (
-                <div className="space-y-1 mb-2">
-                  {currentSlideData.operators.map((op, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-1.5">
-                      <div className="flex items-center mb-0.5">
-                        <span className="text-2xl font-black mr-1">{op.symbol}</span>
-                        <div>
-                          <h3 className="font-bold text-xs">{op.name}</h3>
-                          <p className="text-xs opacity-90">{op.desc}</p>
+                  </div>
+                  <h1 className="text-7xl font-bold text-white mb-6 animate-fade-in">
+                    {slide.title}
+                  </h1>
+                  <p className="text-3xl text-white/90 font-light">
+                    {slide.subtitle}
+                  </p>
+                  
+                  {/* Thematic Image Section */}
+                  <div className="pt-8 space-y-6">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-3xl mx-auto">
+                      <div className="flex items-center justify-center gap-8">
+                        {/* Thematic Image Placeholder */}
+                        <div className="flex-shrink-0">
+                          <div className="w-48 h-48 rounded-2xl bg-white/20 backdrop-blur-sm border-4 border-white/30 flex items-center justify-center overflow-hidden">
+                            <div className="text-white text-8xl">💾</div>
+                          </div>
+                        </div>
+                        
+                        {/* Student Name */}
+                        <div className="text-left">
+                          <p className="text-white/70 text-xl mb-3">Presentado por:</p>
+                          <h2 className="text-5xl font-bold text-white mb-2">Diego Andrés Bravo</h2>
+                          <div className="h-1 w-32 bg-gradient-to-r from-white/50 to-transparent rounded-full"></div>
                         </div>
                       </div>
-                      <code className="bg-black/30 p-1 rounded text-yellow-300 block text-xs">{op.example}</code>
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Equivalent */}
-              {currentSlideData.equivalent && (
-                <div className="space-y-0.5 mb-2">
-                  {currentSlideData.equivalent.map((eq, idx) => (
-                    <div key={idx} className="bg-black/30 rounded-lg p-1.5 font-mono text-xs text-yellow-300">
-                      {eq}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Use */}
-              {currentSlideData.use && (
-                <div className="bg-white/20 backdrop-blur rounded-lg p-1.5 text-xs mb-2">
-                  <strong>Utilidad:</strong> {currentSlideData.use}
-                </div>
-              )}
-
-              {/* Applications */}
-              {currentSlideData.applications && (
-                <div className="grid grid-cols-3 gap-1 mb-2">
-                  {currentSlideData.applications.map((app, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-1.5 text-center">
-                      <div className="text-2xl mb-0.5">{app.icon}</div>
-                      <p className="font-semibold text-xs">{app.text}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Hierarchy */}
-              {currentSlideData.hierarchy && (
-                <div className="space-y-3 mb-6">
-                  {currentSlideData.hierarchy.map((h, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-4">
-                      <h3 className="font-bold text-xl mb-2">{h.level}</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {h.items.map((item, j) => (
-                          <span key={j} className="bg-white/30 px-3 py-1 rounded-full text-sm">
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Benefits */}
-              {currentSlideData.benefits && (
-                <div className="space-y-2 mb-6">
-                  {currentSlideData.benefits.map((benefit, idx) => (
-                    <p key={idx} className="text-lg font-semibold leading-relaxed">
-                      {benefit}
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              {/* Final Message */}
-              {currentSlideData.finalMessage && (
-                <p className="text-xs leading-relaxed italic opacity-95">
-                  {currentSlideData.finalMessage}
-                </p>
-              )}
-
-              {/* Definition */}
-              {currentSlideData.definition && (
-                <div className="bg-white/20 backdrop-blur-md rounded-xl p-4 mb-4 border border-white/30">
-                  <p className="text-lg font-bold italic text-center">
-                    "{currentSlideData.definition}"
-                  </p>
-                </div>
-              )}
-
-              {/* Characteristics */}
-              {currentSlideData.characteristics && (
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  {currentSlideData.characteristics.map((char, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-4">
-                      <h3 className="font-bold text-lg mb-2">{char.title}</h3>
-                      <p className="text-base opacity-90">{char.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Reasons */}
-              {currentSlideData.reasons && (
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  {currentSlideData.reasons.map((reason, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-4">
-                      <div className="flex items-center mb-2">
-                        <span className="text-3xl mr-3">{reason.icon}</span>
-                        <h3 className="font-bold text-lg">{reason.title}</h3>
-                      </div>
-                      <p className="text-base opacity-90">{reason.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Languages With Pointers */}
-              {currentSlideData.languagesWithPointers && (
-                <div className="space-y-3 mb-6">
-                  {currentSlideData.languagesWithPointers.map((lang, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-bold text-lg">{lang.name}</h3>
-                        <span className="text-xs bg-white/30 px-3 py-1.5 rounded">{lang.level}</span>
-                      </div>
-                      <p className="text-base opacity-90 mb-2">{lang.desc}</p>
-                      <p className="text-sm opacity-75">💼 {lang.use}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Languages Without Pointers */}
-              {currentSlideData.languagesWithoutPointers && (
-                <div className="space-y-3 mb-6">
-                  {currentSlideData.languagesWithoutPointers.map((lang, idx) => (
-                    <div key={idx} className="bg-white/20 backdrop-blur rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-bold text-lg">{lang.name}</h3>
-                        <span className="text-xs bg-white/30 px-3 py-1.5 rounded">{lang.level}</span>
-                      </div>
-                      <p className="text-base opacity-90 mb-2">{lang.desc}</p>
-                      <p className="text-sm opacity-75">💼 {lang.use}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Comparison Table 2 */}
-              {currentSlideData.comparison2 && (
-                <div className="space-y-2 mb-6 max-h-96 overflow-y-auto pr-2">
-                  <div className="bg-white/10 backdrop-blur rounded-lg p-3 border border-white/20">
-                    <div className="grid grid-cols-5 gap-3 text-sm font-bold mb-2">
-                      <div>Lenguaje</div>
-                      <div>Punteros</div>
-                      <div>Control</div>
-                      <div>Seguridad</div>
-                      <div>Uso</div>
+                    
+                    <div className="inline-block bg-white/20 backdrop-blur-sm px-8 py-4 rounded-full">
+                      <p className="text-white text-xl">Presiona → para comenzar</p>
                     </div>
                   </div>
-                  {currentSlideData.comparison2.map((row, idx) => (
-                    <div key={idx} className="bg-white/10 backdrop-blur rounded-lg p-3 border border-white/20">
-                      <div className="grid grid-cols-5 gap-3 text-sm">
-                        <div className="font-bold">{row.lang}</div>
-                        <div>{row.punteros}</div>
-                        <div>{row.control}</div>
-                        <div>{row.seguridad}</div>
-                        <div className="opacity-75">{row.uso}</div>
-                      </div>
+                </div>
+
+                <style jsx>{`
+                  @keyframes float {
+                    0%, 100% { transform: translateY(0px) rotate(0deg); }
+                    50% { transform: translateY(-20px) rotate(5deg); }
+                  }
+                  .animate-float {
+                    animation: float 6s ease-in-out infinite;
+                  }
+                  @keyframes float-cube {
+                    0%, 100% { transform: translate(0, 0) scale(1); }
+                    50% { transform: translate(3px, -8px) scale(1.05); }
+                  }
+                  .animate-float-cube {
+                    animation: float-cube 4s ease-in-out infinite;
+                  }
+                  @keyframes pulse-slow {
+                    0%, 100% { opacity: 0.6; transform: scale(1); }
+                    50% { opacity: 1; transform: scale(1.3); }
+                  }
+                  .animate-pulse-slow {
+                    animation: pulse-slow 3s ease-in-out infinite;
+                  }
+                  @keyframes twinkle {
+                    0%, 100% { opacity: 0.3; transform: scale(1); }
+                    50% { opacity: 1; transform: scale(1.5); }
+                  }
+                  .animate-twinkle {
+                    animation: twinkle 2s ease-in-out infinite;
+                  }
+                `}</style>
+              </div>
+            )}
+
+            {/* Conclusion Slide */}
+            {slide.type === "conclusion" && (
+              <div className="text-center space-y-8">
+                <div className="flex justify-center mb-6">
+                  <div className="bg-white/20 backdrop-blur-lg rounded-full p-6">
+                    <slide.icon className="w-16 h-16 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-6xl font-bold text-white mb-8">{slide.title}</h2>
+                <div className="space-y-6 max-w-3xl mx-auto">
+                  {slide.content.map((item, idx) => (
+                    <div 
+                      key={idx}
+                      className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 transform hover:scale-105 transition-all duration-300"
+                    >
+                      <p className="text-2xl text-white font-medium">{item}</p>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="h-16 bg-black/30 flex items-center justify-between px-8 border-t border-white/20 gap-4 flex-shrink-0">
-            {/* Left Button */}
-            <button
-              onClick={prevSlide}
-              className="bg-white/20 hover:bg-white/40 text-white px-6 py-2 rounded-lg transition-all duration-200 font-semibold text-sm flex items-center gap-2 whitespace-nowrap"
-            >
-              <ChevronLeft size={18} />
-              Anterior
-            </button>
-
-            {/* Progress Info */}
-            <div className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-white/70 text-xs font-semibold">
-                Slide {currentSlide + 1} of {slides.length}
-              </span>
-              <div className="h-1 w-full bg-white/20 rounded-full">
-                <div
-                  className="h-full bg-white rounded-full transition-all duration-300"
-                  style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
-                />
               </div>
-            </div>
+            )}
 
-            {/* Right Button */}
-            <button
-              onClick={nextSlide}
-              className="bg-white/20 hover:bg-white/40 text-white px-6 py-2 rounded-lg transition-all duration-200 font-semibold text-sm flex items-center gap-2 whitespace-nowrap"
-            >
-              Siguiente
-              <ChevronRight size={18} />
-            </button>
+            {/* Regular Content Slides */}
+            {!slide.type && (
+              <>
+                {/* Animated network background for slide 1 */}
+                {slide.id === 1 && (
+                  <div className="absolute inset-0 overflow-hidden">
+                    {/* Network of 3D cubes and connections */}
+                    <svg className="absolute inset-0 w-full h-full opacity-30" style={{zIndex: 0}}>
+                      {/* Connection lines - creating a network effect */}
+                      <line x1="15%" y1="20%" x2="35%" y2="15%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="35%" y1="15%" x2="55%" y2="25%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="55%" y1="25%" x2="70%" y2="18%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="70%" y1="18%" x2="85%" y2="30%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      
+                      <line x1="15%" y1="20%" x2="25%" y2="40%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="35%" y1="15%" x2="40%" y2="35%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="25%" y1="40%" x2="40%" y2="35%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="40%" y1="35%" x2="55%" y2="45%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="55%" y1="25%" x2="55%" y2="45%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="55%" y1="45%" x2="75%" y2="50%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="70%" y1="18%" x2="75%" y2="50%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="75%" y1="50%" x2="88%" y2="55%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="85%" y1="30%" x2="88%" y2="55%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      
+                      <line x1="25%" y1="40%" x2="30%" y2="65%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="40%" y1="35%" x2="45%" y2="70%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="30%" y1="65%" x2="45%" y2="70%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="55%" y1="45%" x2="60%" y2="75%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="45%" y1="70%" x2="60%" y2="75%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="75%" y1="50%" x2="78%" y2="70%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="60%" y1="75%" x2="78%" y2="70%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="88%" y1="55%" x2="85%" y2="75%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                      <line x1="78%" y1="70%" x2="85%" y2="75%" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                    </svg>
+
+                    {/* 3D Isometric Cubes */}
+                    {[
+                      {x: 15, y: 20, delay: 0},
+                      {x: 35, y: 15, delay: 0.2},
+                      {x: 55, y: 25, delay: 0.4},
+                      {x: 70, y: 18, delay: 0.6},
+                      {x: 85, y: 30, delay: 0.8},
+                      {x: 25, y: 40, delay: 1},
+                      {x: 40, y: 35, delay: 1.2},
+                      {x: 55, y: 45, delay: 1.4},
+                      {x: 75, y: 50, delay: 1.6},
+                      {x: 88, y: 55, delay: 1.8},
+                      {x: 30, y: 65, delay: 2},
+                      {x: 45, y: 70, delay: 2.2},
+                      {x: 60, y: 75, delay: 2.4},
+                      {x: 78, y: 70, delay: 2.6},
+                      {x: 85, y: 75, delay: 2.8},
+                    ].map((cube, i) => (
+                      <div
+                        key={i}
+                        className="absolute transition-all duration-1000 ease-in-out"
+                        style={{
+                          left: `${cube.x}%`,
+                          top: `${cube.y}%`,
+                          animation: `floatCube 4s ease-in-out infinite`,
+                          animationDelay: `${cube.delay}s`,
+                          zIndex: 1
+                        }}
+                      >
+                        {/* Isometric 3D Cube */}
+                        <svg width="40" height="40" viewBox="0 0 50 50" className="opacity-60 drop-shadow-lg">
+                          {/* Top face */}
+                          <path d="M25 5 L40 15 L25 25 L10 15 Z" fill="rgba(255,255,255,0.8)" stroke="rgba(255,255,255,0.9)" strokeWidth="1"/>
+                          {/* Left face */}
+                          <path d="M10 15 L10 35 L25 45 L25 25 Z" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.7)" strokeWidth="1"/>
+                          {/* Right face */}
+                          <path d="M25 25 L25 45 L40 35 L40 15 Z" fill="rgba(255,255,255,0.6)" stroke="rgba(255,255,255,0.8)" strokeWidth="1"/>
+                        </svg>
+                      </div>
+                    ))}
+
+                    {/* Small circular nodes */}
+                    {[
+                      {x: 20, y: 28, delay: 0.3},
+                      {x: 48, y: 20, delay: 0.7},
+                      {x: 63, y: 35, delay: 1.1},
+                      {x: 82, y: 43, delay: 1.5},
+                      {x: 38, y: 52, delay: 1.9},
+                      {x: 68, y: 62, delay: 2.3},
+                      {x: 18, y: 55, delay: 2.7},
+                    ].map((node, i) => (
+                      <div
+                        key={`node-${i}`}
+                        className="absolute"
+                        style={{
+                          left: `${node.x}%`,
+                          top: `${node.y}%`,
+                          animation: `pulseSlow 3s ease-in-out infinite`,
+                          animationDelay: `${node.delay}s`,
+                        }}
+                      >
+                        <div className="w-3 h-3 bg-white rounded-full opacity-60 shadow-lg shadow-white/50"></div>
+                      </div>
+                    ))}
+
+                    {/* Bright particles/stars */}
+                    {[
+                      {x: 28, y: 12, delay: 0.5, size: 'text-sm'},
+                      {x: 62, y: 8, delay: 1.2, size: 'text-xs'},
+                      {x: 92, y: 22, delay: 1.8, size: 'text-sm'},
+                      {x: 12, y: 48, delay: 2.4, size: 'text-xs'},
+                      {x: 50, y: 58, delay: 3, size: 'text-sm'},
+                      {x: 88, y: 68, delay: 3.6, size: 'text-xs'},
+                      {x: 35, y: 82, delay: 4.2, size: 'text-sm'},
+                    ].map((star, i) => (
+                      <div
+                        key={`star-${i}`}
+                        className={`absolute ${star.size}`}
+                        style={{
+                          left: `${star.x}%`,
+                          top: `${star.y}%`,
+                          animation: `twinkle 2s ease-in-out infinite`,
+                          animationDelay: `${star.delay}s`,
+                        }}
+                      >
+                        <span className="text-white opacity-70">✦</span>
+                      </div>
+                    ))}
+
+                    {/* Large sparkle in bottom right corner */}
+                    <div 
+                      className="absolute bottom-8 right-8" 
+                      style={{
+                        animation: `pulseSlow 3s ease-in-out infinite`,
+                        animationDelay: '0.5s'
+                      }}
+                    >
+                      <div className="text-white text-6xl opacity-50">✦</div>
+                    </div>
+
+                    {/* Small structure diagram at bottom center */}
+                    <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 opacity-40">
+                      <svg width="120" height="80" viewBox="0 0 120 80">
+                        {/* Root node */}
+                        <rect x="50" y="5" width="20" height="20" fill="none" stroke="white" strokeWidth="2" rx="3"/>
+                        <circle cx="60" cy="15" r="3" fill="white"/>
+                        
+                        {/* Connections */}
+                        <line x1="60" y1="25" x2="30" y2="50" stroke="white" strokeWidth="2"/>
+                        <line x1="60" y1="25" x2="60" y2="50" stroke="white" strokeWidth="2"/>
+                        <line x1="60" y1="25" x2="90" y2="50" stroke="white" strokeWidth="2"/>
+                        
+                        {/* Child nodes */}
+                        <rect x="20" y="50" width="20" height="20" fill="none" stroke="white" strokeWidth="2" rx="3"/>
+                        <text x="30" y="65" fill="white" fontSize="12" textAnchor="middle">A</text>
+                        
+                        <circle cx="60" cy="60" r="12" fill="none" stroke="white" strokeWidth="2"/>
+                        
+                        <rect x="80" y="50" width="20" height="20" fill="none" stroke="white" strokeWidth="2" rx="3"/>
+                        <circle cx="90" cy="60" r="4" fill="white"/>
+                      </svg>
+                    </div>
+                  </div>
+                )}
+
+                {/* Animated network background for slides with network */}
+                {slide.hasNetworkBg && (
+                  <div className="absolute inset-0 overflow-hidden">
+                    {/* Network of connections */}
+                    <svg className="absolute inset-0 w-full h-full opacity-25" style={{zIndex: 0}}>
+                      {/* Create a mesh network */}
+                      {[...Array(25)].map((_, i) => {
+                        const x1 = (Math.random() * 100);
+                        const y1 = (Math.random() * 100);
+                        const x2 = (Math.random() * 100);
+                        const y2 = (Math.random() * 100);
+                        return (
+                          <line 
+                            key={`line-${i}`}
+                            x1={`${x1}%`} 
+                            y1={`${y1}%`} 
+                            x2={`${x2}%`} 
+                            y2={`${y2}%`} 
+                            stroke="rgba(255,255,255,0.3)" 
+                            strokeWidth="1"
+                            className="animate-pulse"
+                            style={{animationDelay: `${i * 0.1}s`, animationDuration: '4s'}}
+                          />
+                        );
+                      })}
+                    </svg>
+
+                    {/* Network nodes */}
+                    {[...Array(20)].map((_, i) => {
+                      const x = Math.random() * 95 + 2;
+                      const y = Math.random() * 95 + 2;
+                      return (
+                        <div
+                          key={`network-node-${i}`}
+                          className="absolute"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            animation: `pulseSlow ${3 + Math.random() * 2}s ease-in-out infinite`,
+                            animationDelay: `${i * 0.15}s`,
+                          }}
+                        >
+                          <div className="w-2 h-2 bg-white rounded-full opacity-50"></div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Floating cubes */}
+                    {[...Array(6)].map((_, i) => {
+                      const x = Math.random() * 90 + 5;
+                      const y = Math.random() * 90 + 5;
+                      return (
+                        <div
+                          key={`float-cube-${i}`}
+                          className="absolute"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            animation: `floatCube ${5 + Math.random() * 3}s ease-in-out infinite`,
+                            animationDelay: `${i * 0.5}s`,
+                          }}
+                        >
+                          <svg width="35" height="35" viewBox="0 0 50 50" className="opacity-30">
+                            <path d="M25 5 L40 15 L25 25 L10 15 Z" fill="rgba(255,255,255,0.7)" stroke="rgba(255,255,255,0.8)" strokeWidth="1"/>
+                            <path d="M10 15 L10 35 L25 45 L25 25 Z" fill="rgba(255,255,255,0.4)" stroke="rgba(255,255,255,0.6)" strokeWidth="1"/>
+                            <path d="M25 25 L25 45 L40 35 L40 15 Z" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.7)" strokeWidth="1"/>
+                          </svg>
+                        </div>
+                      );
+                    })}
+
+                    {/* Sparkles */}
+                    {[...Array(8)].map((_, i) => {
+                      const x = Math.random() * 95 + 2;
+                      const y = Math.random() * 95 + 2;
+                      return (
+                        <div
+                          key={`sparkle-${i}`}
+                          className="absolute text-sm"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            animation: `twinkle ${2 + Math.random()}s ease-in-out infinite`,
+                            animationDelay: `${i * 0.3}s`,
+                          }}
+                        >
+                          <span className="text-white opacity-40">✦</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                <div className="flex items-center gap-4 mb-8 relative z-10">
+                  <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-4">
+                    <slide.icon className="w-10 h-10 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-5xl font-bold text-white">{slide.title}</h2>
+                    {slide.subtitle && (
+                      <p className="text-2xl text-white/80 mt-2">{slide.subtitle}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Formula Display */}
+                {slide.formula && (
+                  <div className="mb-8 relative z-10">
+                    {slide.hasFlowDiagram ? (
+                      /* Flow diagram style for slide 2 */
+                      <div className="flex items-center justify-center gap-4 px-8">
+                        {/* Algoritmos box */}
+                        <div className="bg-gradient-to-br from-blue-500/30 to-cyan-500/30 backdrop-blur-sm border-2 border-cyan-400 rounded-3xl px-8 py-6 shadow-xl shadow-cyan-500/50 transform hover:scale-105 transition-all duration-300">
+                          <p className="text-3xl font-bold text-white">Algoritmos</p>
+                        </div>
+
+                        {/* Plus symbol */}
+                        <div className="text-5xl font-bold text-white animate-pulse">+</div>
+
+                        {/* Estructuras de Datos box - larger */}
+                        <div className="bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-sm border-2 border-pink-400 rounded-3xl px-10 py-8 shadow-xl shadow-pink-500/50 transform hover:scale-105 transition-all duration-300">
+                          <p className="text-3xl font-bold text-white text-center">Estructuras de</p>
+                          <p className="text-3xl font-bold text-white text-center">Datos</p>
+                        </div>
+
+                        {/* Equals symbol */}
+                        <div className="text-5xl font-bold text-white animate-pulse">=</div>
+
+                        {/* Programas box */}
+                        <div className="bg-gradient-to-br from-indigo-500/30 to-purple-500/30 backdrop-blur-sm border-2 border-indigo-400 rounded-3xl px-8 py-6 shadow-xl shadow-indigo-500/50 transform hover:scale-105 transition-all duration-300">
+                          <p className="text-3xl font-bold text-white">Programas</p>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Original formula display */
+                      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                        <p className="text-4xl font-mono text-white text-center font-bold">
+                          {slide.formula}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Two Column Layout */}
+                {slide.columns && (
+                  <div className="grid grid-cols-2 gap-8">
+                    {slide.columns.map((col, idx) => (
+                      <div 
+                        key={idx}
+                        className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 transform hover:scale-105 transition-all duration-300"
+                      >
+                        {/* Icon type rendering */}
+                        {col.iconType === 'static-blocks' && (
+                          <div className="mb-6 flex justify-center">
+                            <div className="relative w-24 h-24" style={{animation: 'gentleBob 4s ease-in-out infinite'}}>
+                              {/* Stack of blocks */}
+                              <svg width="96" height="96" viewBox="0 0 100 100" className="drop-shadow-lg">
+                                {/* Bottom block */}
+                                <rect x="20" y="60" width="60" height="18" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,1)" strokeWidth="2" rx="3"/>
+                                <rect x="22" y="62" width="56" height="6" fill="rgba(255,255,255,0.6)"/>
+                                
+                                {/* Middle block */}
+                                <rect x="20" y="38" width="60" height="18" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,1)" strokeWidth="2" rx="3"/>
+                                <rect x="22" y="40" width="56" height="6" fill="rgba(255,255,255,0.6)"/>
+                                
+                                {/* Top block */}
+                                <rect x="20" y="16" width="60" height="18" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,1)" strokeWidth="2" rx="3"/>
+                                <rect x="22" y="18" width="56" height="6" fill="rgba(255,255,255,0.6)"/>
+                              </svg>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {col.iconType === 'dynamic-particles' && (
+                          <div className="mb-6 flex justify-center">
+                            <div className="relative w-24 h-24">
+                              {/* Central core */}
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div className="w-8 h-8 bg-white rounded-full opacity-80 animate-pulse"></div>
+                              </div>
+                              
+                              {/* Orbiting particles */}
+                              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                                <div
+                                  key={i}
+                                  className="absolute top-1/2 left-1/2"
+                                  style={{
+                                    animation: `orbit${i % 3} ${3 + (i % 3)}s linear infinite`,
+                                    animationDelay: `${i * 0.3}s`
+                                  }}
+                                >
+                                  <div 
+                                    className="w-3 h-3 bg-white rounded-full shadow-lg shadow-white/50"
+                                    style={{
+                                      transform: `translate(${30 + (i % 2) * 10}px, 0)`,
+                                      opacity: 0.7 + (i % 3) * 0.1
+                                    }}
+                                  ></div>
+                                </div>
+                              ))}
+                              
+                              {/* Expanding rings */}
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div 
+                                  className="w-16 h-16 border-2 border-white rounded-full opacity-40"
+                                  style={{animation: 'expandFade 3s ease-out infinite'}}
+                                ></div>
+                              </div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div 
+                                  className="w-16 h-16 border-2 border-white rounded-full opacity-40"
+                                  style={{animation: 'expandFade 3s ease-out infinite', animationDelay: '1s'}}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {col.iconType === 'dot-operator' && (
+                          <div className="mb-6 flex justify-center">
+                            <div className="relative w-24 h-24 flex items-center justify-center">
+                              {/* Pin/Location marker with bounce */}
+                              <svg 
+                                width="80" 
+                                height="80" 
+                                viewBox="0 0 100 100" 
+                                className="drop-shadow-lg"
+                                style={{animation: 'pinDrop 2s ease-in-out infinite'}}
+                              >
+                                {/* Pin body */}
+                                <ellipse cx="50" cy="85" rx="8" ry="3" fill="rgba(255,255,255,0.3)"/>
+                                <path 
+                                  d="M 50 20 C 35 20, 25 30, 25 45 C 25 60, 50 80, 50 80 C 50 80, 75 60, 75 45 C 75 30, 65 20, 50 20 Z" 
+                                  fill="rgba(239, 68, 68, 0.9)"
+                                  stroke="rgba(255,255,255,0.8)"
+                                  strokeWidth="2"
+                                />
+                                {/* Center dot */}
+                                <circle cx="50" cy="42" r="8" fill="white"/>
+                              </svg>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {col.iconType === 'arrow-operator' && (
+                          <div className="mb-6 flex justify-center">
+                            <div className="relative w-24 h-24 flex items-center justify-center">
+                              {/* Animated arrow */}
+                              <svg 
+                                width="80" 
+                                height="80" 
+                                viewBox="0 0 100 100" 
+                                className="drop-shadow-lg"
+                              >
+                                {/* Arrow shaft - with sliding animation */}
+                                <rect 
+                                  x="10" 
+                                  y="45" 
+                                  width="60" 
+                                  height="10" 
+                                  fill="rgba(255,255,255,0.8)"
+                                  rx="5"
+                                  style={{animation: 'slideArrow 2s ease-in-out infinite'}}
+                                />
+                                
+                                {/* Arrow head - with sliding animation */}
+                                <path 
+                                  d="M 65 30 L 90 50 L 65 70 Z" 
+                                  fill="rgba(255,255,255,0.9)"
+                                  stroke="rgba(255,255,255,1)"
+                                  strokeWidth="2"
+                                  style={{animation: 'slideArrowHead 2s ease-in-out infinite'}}
+                                />
+                                
+                                {/* Pointer glow effect */}
+                                <circle 
+                                  cx="90" 
+                                  cy="50" 
+                                  r="15" 
+                                  fill="rgba(255,255,255,0.2)"
+                                  style={{animation: 'glowPulse 2s ease-in-out infinite'}}
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {col.gifUrl && !col.iconType && (
+                          <div className="mb-4 flex justify-center">
+                            <img 
+                              src={col.gifUrl} 
+                              alt={col.title}
+                              className="w-32 h-32 object-contain rounded-lg"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.parentElement.innerHTML = '<div class="text-6xl text-center">💻</div>';
+                              }}
+                            />
+                          </div>
+                        )}
+                        
+                        {col.emoji && !col.gifUrl && !col.iconType && (
+                          <div className="text-6xl mb-4 text-center">{col.emoji}</div>
+                        )}
+                        
+                        <h3 className="text-3xl font-bold text-white mb-6 text-center">
+                          {col.title}
+                        </h3>
+                        {col.code ? (
+                          <>
+                            <pre className="bg-gray-900/50 rounded-xl p-4 mb-4 overflow-x-auto">
+                              <code className="text-green-300 text-sm">{col.code}</code>
+                            </pre>
+                            <p className="text-white/80 text-center text-lg">{col.desc}</p>
+                          </>
+                        ) : (
+                          <ul className="space-y-3">
+                            {col.items.map((item, i) => (
+                              <li key={i} className="text-white text-xl flex items-start">
+                                <span className="mr-3 text-2xl">•</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Code Display */}
+                {slide.code && !slide.columns && (
+                  <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 mb-6">
+                    <pre className="overflow-x-auto">
+                      <code className="text-green-300 text-lg">{slide.code}</code>
+                    </pre>
+                  </div>
+                )}
+
+                {/* Content List */}
+                {slide.content && (
+                  <div className="space-y-4">
+                    {slide.content.map((item, idx) => (
+                      <div 
+                        key={idx}
+                        className="bg-white/10 backdrop-blur-sm rounded-xl p-5 transform hover:translate-x-2 transition-all duration-300"
+                      >
+                        <p className="text-white text-2xl flex items-center">
+                          <span className="mr-4 text-3xl">•</span>
+                          {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Image/GIF Display */}
+                {slide.gifUrl && !slide.columns && !slide.hasPointerDiagram && (
+                  <div className="flex justify-center my-6">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 max-w-md">
+                      <img 
+                        src={slide.gifUrl} 
+                        alt={slide.title}
+                        className="w-full h-64 object-contain rounded-xl"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentElement.innerHTML = '<div class="text-6xl text-center py-8">💻</div>';
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Animated Pointer Icon and Diagram */}
+                {slide.hasPointerDiagram && (
+                  <div className="flex flex-col items-center my-8 relative z-10">
+                    {/* Pointer Hand Icon */}
+                    <div className="mb-12">
+                      <svg 
+                        width="100" 
+                        height="100" 
+                        viewBox="0 0 100 100"
+                        style={{animation: 'pointerPulse 2s ease-in-out infinite'}}
+                      >
+                        {/* Hand/Pointer icon */}
+                        <path 
+                          d="M 30 60 L 30 30 Q 30 20, 40 20 Q 45 20, 45 30 L 45 25 Q 45 15, 52 15 Q 58 15, 58 25 L 58 28 Q 58 18, 65 18 Q 71 18, 71 28 L 71 50 Q 71 55, 75 55 Q 80 55, 80 60 L 80 75 Q 80 85, 70 85 L 40 85 Q 30 85, 30 75 Z"
+                          fill="rgba(255,255,255,0.9)"
+                          stroke="rgba(255,255,255,1)"
+                          strokeWidth="2"
+                        />
+                        {/* Pointer indicator */}
+                        <circle cx="52" cy="10" r="6" fill="rgba(255,200,100,0.8)">
+                          <animate attributeName="r" values="6;8;6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                      </svg>
+                    </div>
+
+                    {/* Memory address hexagon with arrows */}
+                    <div className="mb-12 relative">
+                      <div className="flex items-center gap-6">
+                        {/* Left arrow */}
+                        <svg width="60" height="40" style={{animation: 'slideIn 2s ease-in-out infinite'}}>
+                          <path d="M 50 20 L 10 20" stroke="white" strokeWidth="4" fill="none"/>
+                          <path d="M 20 10 L 10 20 L 20 30" stroke="white" strokeWidth="4" fill="none"/>
+                        </svg>
+
+                        {/* Hexagon */}
+                        <div className="relative" style={{animation: 'hexagonPulse 3s ease-in-out infinite'}}>
+                          <svg width="140" height="120" viewBox="0 0 140 120">
+                            <path 
+                              d="M 70 10 L 120 35 L 120 85 L 70 110 L 20 85 L 20 35 Z" 
+                              fill="rgba(34, 197, 94, 0.3)"
+                              stroke="rgba(34, 197, 94, 0.9)"
+                              strokeWidth="3"
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-white font-mono text-lg">0x4fffd34</span>
+                          </div>
+                        </div>
+
+                        {/* Right arrow */}
+                        <svg width="60" height="40" style={{animation: 'slideIn 2s ease-in-out infinite', animationDelay: '0.5s'}}>
+                          <path d="M 10 20 L 50 20" stroke="white" strokeWidth="4" fill="none"/>
+                          <path d="M 40 10 L 50 20 L 40 30" stroke="white" strokeWidth="4" fill="none"/>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Flow diagram: Puntero -> Dirección -> Valor */}
+                    <div className="flex items-center justify-center gap-6">
+                      {/* Puntero box */}
+                      <div 
+                        className="bg-blue-500/30 backdrop-blur-sm border-2 border-blue-400 rounded-2xl px-8 py-6 shadow-lg"
+                        style={{animation: 'fadeInSlide 1s ease-out forwards', animationDelay: '0s'}}
+                      >
+                        <code className="text-white font-mono text-xl">int *ptr</code>
+                        <p className="text-white/70 text-sm mt-2 text-center">Puntero</p>
+                      </div>
+
+                      {/* Arrow 1 */}
+                      <svg width="40" height="20" style={{animation: 'arrowFlow 2s ease-in-out infinite'}}>
+                        <path d="M 5 10 L 30 10" stroke="white" strokeWidth="3" fill="none"/>
+                        <path d="M 22 5 L 30 10 L 22 15" stroke="white" strokeWidth="3" fill="none"/>
+                      </svg>
+
+                      {/* Dirección box */}
+                      <div 
+                        className="bg-green-500/30 backdrop-blur-sm border-2 border-green-400 rounded-2xl px-8 py-6 shadow-lg"
+                        style={{animation: 'fadeInSlide 1s ease-out forwards', animationDelay: '0.5s'}}
+                      >
+                        <code className="text-white font-mono text-xl">0x4fffd34</code>
+                        <p className="text-white/70 text-sm mt-2 text-center">Dirección</p>
+                      </div>
+
+                      {/* Arrow 2 */}
+                      <svg width="40" height="20" style={{animation: 'arrowFlow 2s ease-in-out infinite', animationDelay: '0.5s'}}>
+                        <path d="M 5 10 L 30 10" stroke="white" strokeWidth="3" fill="none"/>
+                        <path d="M 22 5 L 30 10 L 22 15" stroke="white" strokeWidth="3" fill="none"/>
+                      </svg>
+
+                      {/* Valor box */}
+                      <div 
+                        className="bg-purple-500/30 backdrop-blur-sm border-2 border-purple-400 rounded-2xl px-8 py-6 shadow-lg"
+                        style={{animation: 'fadeInSlide 1s ease-out forwards', animationDelay: '1s'}}
+                      >
+                        <code className="text-white font-mono text-xl">25</code>
+                        <p className="text-white/70 text-sm mt-2 text-center">Valor</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Image/Emoji Display - Legacy */}
+                {slide.image && (
+                  <div className="text-center">
+                    <div className="text-9xl mb-6 animate-bounce">{slide.image}</div>
+                  </div>
+                )}
+
+                {/* Pointer Diagram */}
+                {slide.diagram && (
+                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mt-6">
+                    <div className="flex items-center justify-center gap-8">
+                      <div className="text-center">
+                        <div className="bg-blue-500 text-white rounded-lg p-6 text-2xl font-mono mb-2">
+                          int *ptr
+                        </div>
+                        <p className="text-white text-lg">Puntero</p>
+                      </div>
+                      <div className="text-6xl text-white">→</div>
+                      <div className="text-center">
+                        <div className="bg-green-500 text-white rounded-lg p-6 text-2xl font-mono mb-2">
+                          0x4fffd34
+                        </div>
+                        <p className="text-white text-lg">Dirección</p>
+                      </div>
+                      <div className="text-6xl text-white">→</div>
+                      <div className="text-center">
+                        <div className="bg-purple-500 text-white rounded-lg p-6 text-2xl font-mono mb-2">
+                          25
+                        </div>
+                        <p className="text-white text-lg">Valor</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex items-center justify-center gap-2 p-4 bg-gray-900/50">
-        {slides.map((_, idx) => (
+      {/* Navigation Controls */}
+      <div className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-700 p-6">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
           <button
-            key={idx}
-            onClick={() => setCurrentSlide(idx)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              idx === currentSlide
-                ? 'w-10 bg-white'
-                : 'w-2 bg-white/40 hover:bg-white/60'
-            }`}
-            title={`Ir a diapositiva ${idx + 1}`}
-          />
-        ))}
+            onClick={prevSlide}
+            className="bg-white/10 hover:bg-white/20 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110"
+            disabled={currentSlide === 0}
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          <div className="flex gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => goToSlide(idx)}
+                className={`h-3 rounded-full transition-all duration-300 ${
+                  idx === currentSlide
+                    ? 'w-12 bg-gradient-to-r from-blue-500 to-purple-500'
+                    : 'w-3 bg-white/30 hover:bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={nextSlide}
+            className="bg-white/10 hover:bg-white/20 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110"
+            disabled={currentSlide === slides.length - 1}
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="text-center mt-4">
+          <p className="text-white/60 text-sm">
+            Diapositiva {currentSlide + 1} de {slides.length}
+          </p>
+        </div>
       </div>
     </div>
   );

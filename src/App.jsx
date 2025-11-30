@@ -1,5 +1,10 @@
-import Presentation from "./Presentation";
+import Presentation from './Presentation'
+import './App.css'
 
-export default function App() {
-  return <Presentation />;
+function App() {
+  return (
+    <Presentation />
+  )
 }
+
+export default App
