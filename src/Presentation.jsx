@@ -76,6 +76,40 @@ const Presentation = () => {
         0% { opacity: 0; transform: translateY(20px); }
         100% { opacity: 1; transform: translateY(0); }
       }
+      @keyframes fall {
+        0% { transform: translateY(0); opacity: 0; }
+        10% { opacity: 0.6; }
+        90% { opacity: 0.6; }
+        100% { transform: translateY(120vh); opacity: 0; }
+      }
+      @keyframes hexFloat {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(10deg); }
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes boxPulse {
+        0%, 100% { 
+          transform: scale(1);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        50% { 
+          transform: scale(1.05);
+          box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+      }
+      @keyframes arrowSlide {
+        0%, 100% { 
+          transform: translateX(0px);
+          opacity: 0.7;
+        }
+        50% { 
+          transform: translateX(8px);
+          opacity: 1;
+        }
+      }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
@@ -201,7 +235,6 @@ const Presentation = () => {
       ],
       hasCircuitBg: true,
       hasPointerDiagram: true,
-      diagram: true,
       gradient: "from-orange-500 to-red-500",
       icon: Pointer
     },
@@ -220,6 +253,7 @@ printf("%d", *p_edad); // Imprime: 25`,
         "Deben inicializarse antes de usarse",
         "El tipo debe coincidir con la variable"
       ],
+      hasCircuitBg: true,
       gradient: "from-red-500 to-pink-500",
       icon: Pointer
     },
@@ -229,7 +263,7 @@ printf("%d", *p_edad); // Imprime: 25`,
       columns: [
         {
           title: "Uniones",
-          gifUrl: "https://cdn-icons-png.flaticon.com/512/3524/3524388.png",
+          iconType: "union-shapes",
           items: [
             "Miembros comparten memoria",
             "Tamaño = miembro más grande",
@@ -239,7 +273,7 @@ printf("%d", *p_edad); // Imprime: 25`,
         },
         {
           title: "Enumeraciones",
-          gifUrl: "https://cdn-icons-png.flaticon.com/512/6614/6614953.png",
+          iconType: "enum-list",
           items: [
             "Conjunto de constantes",
             "Valores enteros nombrados",
@@ -249,7 +283,8 @@ printf("%d", *p_edad); // Imprime: 25`,
         }
       ],
       gradient: "from-violet-500 to-purple-500",
-      icon: List
+      icon: List,
+      hasWavyBg: true
     },
     {
       id: 9,
@@ -453,8 +488,144 @@ printf("%d", *p_edad); // Imprime: 25`,
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-6xl">
-          <div className={`bg-gradient-to-br ${slide.gradient} rounded-3xl shadow-2xl p-12 min-h-[600px] flex flex-col justify-center transform transition-all duration-500`}>
+          <div className={`bg-gradient-to-br ${slide.gradient} rounded-3xl shadow-2xl p-12 min-h-[600px] flex flex-col justify-center transform transition-all duration-500 relative overflow-hidden`}>
             
+            {/* FONDO DE CÓDIGO - AHORA RENDERIZADO PARA TODAS LAS DIAPOSITIVAS */}
+            {slide.hasCircuitBg && (
+              <div className="absolute inset-0 overflow-hidden" style={{opacity: 0.25, zIndex: 0}}>
+                {/* Falling binary code effect */}
+                {[...Array(15)].map((_, i) => (
+                  <div
+                    key={`binary-${i}`}
+                    className="absolute text-white font-mono text-lg font-bold"
+                    style={{
+                      left: `${i * 6.5}%`,
+                      top: '-10%',
+                      animation: `fall ${6 + Math.random() * 3}s linear infinite`,
+                      animationDelay: `${i * 0.4}s`
+                    }}
+                  >
+                    <div style={{marginBottom: '25px'}}>0x</div>
+                    <div style={{marginBottom: '25px'}}>*</div>
+                    <div style={{marginBottom: '25px'}}>1</div>
+                    <div style={{marginBottom: '25px'}}>&</div>
+                    <div style={{marginBottom: '25px'}}>0</div>
+                    <div style={{marginBottom: '25px'}}>→</div>
+                    <div style={{marginBottom: '25px'}}>1</div>
+                    <div style={{marginBottom: '25px'}}>*</div>
+                    <div style={{marginBottom: '25px'}}>0x</div>
+                    <div style={{marginBottom: '25px'}}>0</div>
+                  </div>
+                ))}
+
+                {/* Hexagonal pattern */}
+                {[...Array(8)].map((_, i) => (
+                  <div
+                    key={`hex-${i}`}
+                    className="absolute"
+                    style={{
+                      left: `${10 + i * 12}%`,
+                      top: `${15 + (i % 2) * 35}%`,
+                      animation: `hexFloat ${5 + i * 0.8}s ease-in-out infinite`,
+                      animationDelay: `${i * 0.6}s`
+                    }}
+                  >
+                    <svg width="70" height="70" viewBox="0 0 100 100">
+                      <path 
+                        d="M 50 10 L 85 30 L 85 70 L 50 90 L 15 70 L 15 30 Z" 
+                        fill="none"
+                        stroke="rgba(255,255,255,0.6)"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </div>
+                ))}
+
+                {/* Memory addresses floating */}
+                {['0xFF', '0xA0', '0x2C', '0xB4', '0x7D', '0xE1'].map((addr, i) => (
+                  <div
+                    key={`addr-${i}`}
+                    className="absolute text-white font-mono text-lg font-bold"
+                    style={{
+                      left: `${15 + i * 15}%`,
+                      top: `${30 + (i % 2) * 25}%`,
+                      animation: `float ${4 + i * 1.5}s ease-in-out infinite`,
+                      animationDelay: `${i * 0.8}s`,
+                      opacity: 0.4
+                    }}
+                  >
+                    {addr}
+                  </div>
+                ))}
+
+                {/* Pointer symbols */}
+                {['*ptr', '&var', '→', '*', '&'].map((symbol, i) => (
+                  <div
+                    key={`symbol-${i}`}
+                    className="absolute text-white font-mono text-2xl font-bold"
+                    style={{
+                      left: `${20 + i * 18}%`,
+                      top: `${50 + (i % 2) * 15}%`,
+                      animation: `float ${5 + i * 1.2}s ease-in-out infinite`,
+                      animationDelay: `${i * 0.5}s`,
+                      opacity: 0.35
+                    }}
+                  >
+                    {symbol}
+                  </div>
+                ))}
+
+                {/* Sparkles */}
+                <div className="absolute bottom-16 right-16" style={{animation: 'twinkle 3s ease-in-out infinite'}}>
+                  <div className="text-white text-5xl opacity-50">✦</div>
+                </div>
+                <div className="absolute top-20 left-20" style={{animation: 'twinkle 3s ease-in-out infinite', animationDelay: '1.5s'}}>
+                  <div className="text-white text-4xl opacity-45">✦</div>
+                </div>
+              </div>
+            )}
+
+            {/* FONDO ONDULADO PARA UNIONES Y ENUMERACIONES */}
+            {slide.hasWavyBg && (
+              <div className="absolute inset-0 overflow-hidden" style={{zIndex: 0}}>
+                {/* Wavy shapes */}
+                <svg className="absolute inset-0 w-full h-full" style={{opacity: 0.15}}>
+                  <defs>
+                    <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{stopColor: 'rgba(139, 92, 246, 0.4)'}} />
+                      <stop offset="100%" style={{stopColor: 'rgba(168, 85, 247, 0.6)'}} />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Animated wave 1 */}
+                  <path 
+                    d="M 0,200 Q 250,100 500,200 T 1000,200 L 1000,400 L 0,400 Z" 
+                    fill="url(#waveGradient1)"
+                    style={{animation: 'waveMove 8s ease-in-out infinite'}}
+                  />
+                  
+                  {/* Animated wave 2 */}
+                  <path 
+                    d="M 0,300 Q 250,250 500,300 T 1000,300 L 1000,500 L 0,500 Z" 
+                    fill="rgba(139, 92, 246, 0.2)"
+                    style={{animation: 'waveMove 10s ease-in-out infinite', animationDelay: '-2s'}}
+                  />
+                  
+                  {/* Animated wave 3 */}
+                  <path 
+                    d="M 0,400 Q 250,350 500,400 T 1000,400 L 1000,600 L 0,600 Z" 
+                    fill="rgba(168, 85, 247, 0.15)"
+                    style={{animation: 'waveMove 12s ease-in-out infinite', animationDelay: '-4s'}}
+                  />
+                </svg>
+
+                {/* Sparkle */}
+                <div className="absolute bottom-16 right-16" style={{animation: 'twinkle 3s ease-in-out infinite'}}>
+                  <div className="text-white text-5xl opacity-40">✦</div>
+                </div>
+              </div>
+            )}
+
             {/* Cover Slide */}
             {slide.type === "cover" && (
               <div className="text-center space-y-8 relative overflow-hidden">
@@ -1181,103 +1352,73 @@ printf("%d", *p_edad); // Imprime: 25`,
                   </div>
                 )}
 
-                {/* Animated Pointer Icon and Diagram */}
+                {/* Pointer Diagram - SOLO EL DE COLORES SÓLIDOS CON ANIMACIONES INFINITAS */}
                 {slide.hasPointerDiagram && (
-                  <div className="flex flex-col items-center my-8 relative z-10">
-                    {/* Pointer Hand Icon */}
-                    <div className="mb-12">
-                      <svg 
-                        width="100" 
-                        height="100" 
-                        viewBox="0 0 100 100"
-                        style={{animation: 'pointerPulse 2s ease-in-out infinite'}}
-                      >
-                        {/* Hand/Pointer icon */}
-                        <path 
-                          d="M 30 60 L 30 30 Q 30 20, 40 20 Q 45 20, 45 30 L 45 25 Q 45 15, 52 15 Q 58 15, 58 25 L 58 28 Q 58 18, 65 18 Q 71 18, 71 28 L 71 50 Q 71 55, 75 55 Q 80 55, 80 60 L 80 75 Q 80 85, 70 85 L 40 85 Q 30 85, 30 75 Z"
-                          fill="rgba(255,255,255,0.9)"
-                          stroke="rgba(255,255,255,1)"
-                          strokeWidth="2"
-                        />
-                        {/* Pointer indicator */}
-                        <circle cx="52" cy="10" r="6" fill="rgba(255,200,100,0.8)">
-                          <animate attributeName="r" values="6;8;6" dur="1.5s" repeatCount="indefinite"/>
-                        </circle>
+                  <div className="flex items-center justify-center gap-8 my-12 relative z-10">
+                    {/* Puntero box - Azul sólido con animación de pulso */}
+                    <div 
+                      className="bg-blue-600 rounded-2xl px-10 py-8 shadow-xl"
+                      style={{
+                        animation: 'boxPulse 3s ease-in-out infinite',
+                        animationDelay: '0s'
+                      }}
+                    >
+                      <code className="text-white font-mono text-2xl font-bold">int *ptr</code>
+                      <p className="text-white text-base mt-3 text-center">Puntero</p>
+                    </div>
+
+                    {/* Arrow 1 con animación de flujo continuo */}
+                    <div style={{animation: 'arrowSlide 2s ease-in-out infinite'}}>
+                      <svg width="50" height="30">
+                        <defs>
+                          <linearGradient id="arrowGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style={{stopColor: 'rgba(255,255,255,0.3)', stopOpacity: 1}} />
+                            <stop offset="50%" style={{stopColor: 'rgba(255,255,255,1)', stopOpacity: 1}} />
+                            <stop offset="100%" style={{stopColor: 'rgba(255,255,255,0.3)', stopOpacity: 1}} />
+                          </linearGradient>
+                        </defs>
+                        <path d="M 5 15 L 40 15" stroke="url(#arrowGradient1)" strokeWidth="4" fill="none"/>
+                        <path d="M 30 8 L 40 15 L 30 22" stroke="white" strokeWidth="4" fill="white"/>
                       </svg>
                     </div>
 
-                    {/* Memory address hexagon with arrows */}
-                    <div className="mb-12 relative">
-                      <div className="flex items-center gap-6">
-                        {/* Left arrow */}
-                        <svg width="60" height="40" style={{animation: 'slideIn 2s ease-in-out infinite'}}>
-                          <path d="M 50 20 L 10 20" stroke="white" strokeWidth="4" fill="none"/>
-                          <path d="M 20 10 L 10 20 L 20 30" stroke="white" strokeWidth="4" fill="none"/>
-                        </svg>
-
-                        {/* Hexagon */}
-                        <div className="relative" style={{animation: 'hexagonPulse 3s ease-in-out infinite'}}>
-                          <svg width="140" height="120" viewBox="0 0 140 120">
-                            <path 
-                              d="M 70 10 L 120 35 L 120 85 L 70 110 L 20 85 L 20 35 Z" 
-                              fill="rgba(34, 197, 94, 0.3)"
-                              stroke="rgba(34, 197, 94, 0.9)"
-                              strokeWidth="3"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-white font-mono text-lg">0x4fffd34</span>
-                          </div>
-                        </div>
-
-                        {/* Right arrow */}
-                        <svg width="60" height="40" style={{animation: 'slideIn 2s ease-in-out infinite', animationDelay: '0.5s'}}>
-                          <path d="M 10 20 L 50 20" stroke="white" strokeWidth="4" fill="none"/>
-                          <path d="M 40 10 L 50 20 L 40 30" stroke="white" strokeWidth="4" fill="none"/>
-                        </svg>
-                      </div>
+                    {/* Dirección box - Verde sólido con animación de pulso */}
+                    <div 
+                      className="bg-green-600 rounded-2xl px-10 py-8 shadow-xl"
+                      style={{
+                        animation: 'boxPulse 3s ease-in-out infinite',
+                        animationDelay: '1s'
+                      }}
+                    >
+                      <code className="text-white font-mono text-2xl font-bold">0x4fffd34</code>
+                      <p className="text-white text-base mt-3 text-center">Dirección</p>
                     </div>
 
-                    {/* Flow diagram: Puntero -> Dirección -> Valor */}
-                    <div className="flex items-center justify-center gap-6">
-                      {/* Puntero box */}
-                      <div 
-                        className="bg-blue-500/30 backdrop-blur-sm border-2 border-blue-400 rounded-2xl px-8 py-6 shadow-lg"
-                        style={{animation: 'fadeInSlide 1s ease-out forwards', animationDelay: '0s'}}
-                      >
-                        <code className="text-white font-mono text-xl">int *ptr</code>
-                        <p className="text-white/70 text-sm mt-2 text-center">Puntero</p>
-                      </div>
-
-                      {/* Arrow 1 */}
-                      <svg width="40" height="20" style={{animation: 'arrowFlow 2s ease-in-out infinite'}}>
-                        <path d="M 5 10 L 30 10" stroke="white" strokeWidth="3" fill="none"/>
-                        <path d="M 22 5 L 30 10 L 22 15" stroke="white" strokeWidth="3" fill="none"/>
+                    {/* Arrow 2 con animación de flujo continuo */}
+                    <div style={{animation: 'arrowSlide 2s ease-in-out infinite', animationDelay: '0.5s'}}>
+                      <svg width="50" height="30">
+                        <defs>
+                          <linearGradient id="arrowGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style={{stopColor: 'rgba(255,255,255,0.3)', stopOpacity: 1}} />
+                            <stop offset="50%" style={{stopColor: 'rgba(255,255,255,1)', stopOpacity: 1}} />
+                            <stop offset="100%" style={{stopColor: 'rgba(255,255,255,0.3)', stopOpacity: 1}} />
+                          </linearGradient>
+                        </defs>
+                        <path d="M 5 15 L 40 15" stroke="url(#arrowGradient2)" strokeWidth="4" fill="none"/>
+                        <path d="M 30 8 L 40 15 L 30 22" stroke="white" strokeWidth="4" fill="white"/>
                       </svg>
+                    </div>
 
-                      {/* Dirección box */}
-                      <div 
-                        className="bg-green-500/30 backdrop-blur-sm border-2 border-green-400 rounded-2xl px-8 py-6 shadow-lg"
-                        style={{animation: 'fadeInSlide 1s ease-out forwards', animationDelay: '0.5s'}}
-                      >
-                        <code className="text-white font-mono text-xl">0x4fffd34</code>
-                        <p className="text-white/70 text-sm mt-2 text-center">Dirección</p>
-                      </div>
-
-                      {/* Arrow 2 */}
-                      <svg width="40" height="20" style={{animation: 'arrowFlow 2s ease-in-out infinite', animationDelay: '0.5s'}}>
-                        <path d="M 5 10 L 30 10" stroke="white" strokeWidth="3" fill="none"/>
-                        <path d="M 22 5 L 30 10 L 22 15" stroke="white" strokeWidth="3" fill="none"/>
-                      </svg>
-
-                      {/* Valor box */}
-                      <div 
-                        className="bg-purple-500/30 backdrop-blur-sm border-2 border-purple-400 rounded-2xl px-8 py-6 shadow-lg"
-                        style={{animation: 'fadeInSlide 1s ease-out forwards', animationDelay: '1s'}}
-                      >
-                        <code className="text-white font-mono text-xl">25</code>
-                        <p className="text-white/70 text-sm mt-2 text-center">Valor</p>
-                      </div>
+                    {/* Valor box - Morado sólido con animación de pulso */}
+                    <div 
+                      className="bg-purple-600 rounded-2xl px-10 py-8 shadow-xl"
+                      style={{
+                        animation: 'boxPulse 3s ease-in-out infinite',
+                        animationDelay: '2s'
+                      }}
+                    >
+                      <code className="text-white font-mono text-2xl font-bold">25</code>
+                      <p className="text-white text-base mt-3 text-center">Valor</p>
                     </div>
                   </div>
                 )}
@@ -1289,8 +1430,8 @@ printf("%d", *p_edad); // Imprime: 25`,
                   </div>
                 )}
 
-                {/* Pointer Diagram */}
-                {slide.diagram && (
+                {/* Pointer Diagram - ELIMINAR ESTE BLOQUE COMPLETO */}
+                {slide.diagram && !slide.hasPointerDiagram && (
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mt-6">
                     <div className="flex items-center justify-center gap-8">
                       <div className="text-center">
